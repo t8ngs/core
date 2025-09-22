@@ -1,0 +1,72 @@
+{
+  "name": "@t8ngs/core",
+  "version": "1.0.0",
+  "description": "Core testing framework for t8ngs - eight things to test simply and quickly",
+  "type": "module",
+  "keywords": [
+    "testing",
+    "test-runner",
+    "typescript",
+    "t8ngs"
+  ],
+  "author": "t8ngs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/t8ngs/core.git"
+  },
+  "bugs": {
+    "url": "https://github.com/t8ngs/core/issues"
+  },
+  "homepage": "https://github.com/t8ngs/core#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "dist",
+    "!dist/tests",
+    "!dist/**/*.test.*"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./types": {
+      "import": "./dist/types.js",
+      "types": "./dist/types.d.ts"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "npm run clean && npm run build:esm && npm run build:types",
+    "build:esm": "tsc --outDir dist --module ESNext --target ES2022",
+    "build:types": "tsc --declaration --emitDeclarationOnly --outDir dist",
+    "clean": "rm -rf dist",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src tests --ext .ts",
+    "lint:fix": "eslint src tests --ext .ts --fix",
+    "prepack": "npm run build",
+    "prepublishOnly": "npm run test && npm run lint"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "@types/jest": "^29.5.8",
+    "@types/node": "^20.9.0",
+    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/parser": "^6.12.0",
+    "eslint": "^8.54.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {},
+  "publishConfig": {
+    "access": "public"
+  }
+}
