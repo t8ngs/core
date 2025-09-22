@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import type { RunnerEvents } from './types'
+import type { RunnerEvents } from './types.js'
 
 /**
  * Simple event emitter for test runner events

@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-export { Runner } from './runner'
-export { Test } from './test'
-export { Emitter } from './emitter'
-export { TestContext } from './test-context'
-export * from './types'
+export { Runner } from './runner.js'
+export { Test } from './test.js'
+export { Emitter } from './emitter.js'
+export { TestContext } from './test-context.js'
+export * from './types.js'

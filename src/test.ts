@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import type { TestOptions, TestExecutor } from './types'
-import { TestContext } from './test-context'
+import type { TestOptions, TestExecutor } from './types.js'
+import { TestContext } from './test-context.js'
 
 /**
  * Represents a single test

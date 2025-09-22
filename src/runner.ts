@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import { Emitter } from './emitter'
-import { Test } from './test'
-import type { FilteringOptions, RunnerSummary } from './types'
+import { Emitter } from './emitter.js'
+import { Test } from './test.js'
+import type { FilteringOptions, RunnerSummary } from './types.js'
 
 /**
  * Test runner that executes tests and emits events
