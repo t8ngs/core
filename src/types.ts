@@ -1,21 +1,19 @@
 /*
  * @t8ngs/core
  *
- * (c) t8ngs
+ * (c) T8ngs
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-// Forward declarations to avoid circular dependencies
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-export interface Runner<Context extends Record<any, any> = any> {
-  // Implementation in runner.ts
-}
+import type { CleanupHandler, HookHandler } from '@poppinss/hooks/types'
 
-export interface Emitter {
-  // Implementation in emitter.ts
-}
+import type { Runner } from './runner.js'
+import type { Test } from './test/main.js'
+import type { Emitter } from './emitter.js'
+import type { Group } from './group/main.js'
+import type { Suite } from './suite/main.js'
 
 /**
  * Summary reporters are registered with the SummaryBuilder to
@@ -27,23 +25,103 @@ export type SummaryReporter = () => { key: string; value: string | string[] }[]
  * Shape of test data set. Should be an array of a function that
  * returns an array
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type DataSetNode = undefined | any[] | (() => any[] | Promise<any[]>)
+
+/**
+ * The data given to the setup and the teardown test
+ * hooks
+ */
+export type TestHooksData<Context extends Record<any, any>> = [
+  [test: Test<Context, any>],
+  [hasError: boolean, test: Test<Context, any>],
+]
+
+/**
+ * The function that can be registered as a test hook
+ */
+export type TestHooksHandler<Context extends Record<any, any>> = HookHandler<
+  TestHooksData<Context>[0],
+  TestHooksData<Context>[1]
+>
+
+/**
+ * The function that can be registered as a cleanup handler
+ */
+export type TestHooksCleanupHandler<Context extends Record<any, any>> = CleanupHandler<
+  TestHooksData<Context>[1]
+>
+
+/**
+ * Hooks available on a test
+ */
+export type TestHooks<Context extends Record<any, any>> = {
+  setup: TestHooksData<Context>
+  teardown: TestHooksData<Context>
+  cleanup: [TestHooksData<Context>[1], [void]]
+}
+
+/**
+ * The data given to the setup and the teardown group
+ * hooks
+ */
+export type GroupHooksData<Context extends Record<any, any>> = [
+  [group: Group<Context>],
+  [hasError: boolean, group: Group<Context>],
+]
+
+/**
+ * The callback function given to the "setup" and the "teardown"
+ * methods on a group
+ */
+export type GroupHooksHandler<Context extends Record<any, any>> = HookHandler<
+  GroupHooksData<Context>[0],
+  GroupHooksData<Context>[1]
+>
+
+/**
+ * Hooks available on a group
+ */
+export type GroupHooks<Context extends Record<any, any>> = {
+  setup: GroupHooksData<Context>
+  teardown: GroupHooksData<Context>
+}
+
+/**
+ * The data given to the setup and the teardown suite
+ * hooks
+ */
+export type SuiteHooksData<Context extends Record<any, any>> = [
+  [suite: Suite<Context>],
+  [hasError: boolean, suite: Suite<Context>],
+]
+
+/**
+ * The function that can be registered as a suite hook
+ */
+export type SuiteHooksHandler<Context extends Record<any, any>> = HookHandler<
+  SuiteHooksData<Context>[0],
+  SuiteHooksData<Context>[1]
+>
+
+/**
+ * Hooks available on a suite
+ */
+export type SuiteHooks<Context extends Record<any, any>> = {
+  setup: SuiteHooksData<Context>
+  teardown: SuiteHooksData<Context>
+}
 
 /**
  * The function to execute the test
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type TestExecutor<Context, DataSet> = DataSet extends any[]
   ? (context: Context, value: DataSet[number], done: (error?: any) => void) => void | Promise<void>
   : DataSet extends () => infer A
     ? (
         context: Context,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         value: Awaited<A> extends any[] ? Awaited<A>[number] : Awaited<A>,
         done?: (error?: any) => void
       ) => void | Promise<void>
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     : (context: Context, done: (error?: any) => void) => void | Promise<void>
 
 /**
@@ -54,7 +132,6 @@ export type TestOptions = {
   tags: string[]
   timeout: number
   waitsForDone?: boolean
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   executor?: TestExecutor<any, any>
   isTodo?: boolean
   isSkipped?: boolean
@@ -63,7 +140,6 @@ export type TestOptions = {
   failReason?: string
   retries?: number
   retryAttempt?: number
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   meta: Record<string, any>
 }
 
@@ -79,7 +155,6 @@ export type TestStartNode = Omit<TestOptions, 'title'> & {
   dataset?: {
     size: number
     index: number
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     row: any
   }
 }
@@ -103,7 +178,6 @@ export type TestEndNode = Omit<TestOptions, 'title'> & {
   dataset?: {
     size: number
     index: number
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     row: any
   }
 }
@@ -113,7 +187,6 @@ export type TestEndNode = Omit<TestOptions, 'title'> & {
  */
 export type GroupOptions = {
   title: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   meta: Record<string, any>
 }
 
@@ -155,7 +228,6 @@ export type SuiteEndNode = {
 /**
  * Data shared with "runner:start" event
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export type RunnerStartNode = {}
 
 /**
@@ -192,7 +264,6 @@ export type FilteringOptions = {
  * Type for the reporter handler function
  */
 export type ReporterHandlerContract = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   runner: Runner<any>,
   emitter: Emitter
 ) => void | Promise<void>
