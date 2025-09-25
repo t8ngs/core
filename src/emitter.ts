@@ -7,61 +7,38 @@
  * file that was distributed with this source code.
  */
 
-import type { RunnerEvents } from './types.js'
+import Emittery from 'emittery'
+import { RunnerEvents } from './types.js'
 
 /**
- * Simple event emitter for test runner events
+ * Runner emitter
  */
-export class Emitter {
-  private listeners: Map<keyof RunnerEvents, Array<(data: any) => void>> = new Map()
+export class Emitter extends Emittery<RunnerEvents> {
+  #errorHandler?: (error: any) => void | Promise<void>
 
   /**
-   * Add an event listener
+   * Define onError handler invoked when `emit` fails
    */
-  on<T extends keyof RunnerEvents>(event: T, listener: (data: RunnerEvents[T]) => void): this {
-    if (!this.listeners.has(event)) {
-      this.listeners.set(event, [])
-    }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.listeners.get(event)!.push(listener as (data: any) => void)
-    return this
+  onError(errorHandler: (error: any) => void | Promise<void>) {
+    this.#errorHandler = errorHandler
   }
 
   /**
-   * Remove an event listener
+   * Emit event
    */
-  off<T extends keyof RunnerEvents>(event: T, listener: (data: RunnerEvents[T]) => void): this {
-    const eventListeners = this.listeners.get(event)
-    if (eventListeners) {
-      const index = eventListeners.indexOf(listener as any)
-      if (index > -1) {
-        eventListeners.splice(index, 1)
+  async emit<Name extends keyof RunnerEvents>(
+    eventName: Name,
+    eventData?: RunnerEvents[Name],
+    allowMetaEvents?: boolean
+  ): Promise<void> {
+    try {
+      await (super.emit as any)(eventName, eventData!, allowMetaEvents)
+    } catch (error) {
+      if (this.#errorHandler) {
+        await this.#errorHandler(error)
+      } else {
+        throw error
       }
     }
-    return this
-  }
-
-  /**
-   * Emit an event
-   */
-  async emit<T extends keyof RunnerEvents>(event: T, data: RunnerEvents[T]): Promise<void> {
-    const eventListeners = this.listeners.get(event)
-    if (eventListeners) {
-      await Promise.all(eventListeners.map(listener => listener(data)))
-    }
-  }
-
-  /**
-   * Get the number of listeners for an event
-   */
-  listenerCount(event: keyof RunnerEvents): number {
-    return this.listeners.get(event)?.length || 0
-  }
-
-  /**
-   * Get all registered event names
-   */
-  eventNames(): Array<keyof RunnerEvents> {
-    return Array.from(this.listeners.keys())
   }
 }

@@ -96,7 +96,7 @@ export class Test<
    * the test.
    *
    * Since tests are executed after they are created, the errors thrown
-   * by the internals of Japa will never point to the original test.
+   * by the internals of t8ngs will never point to the original test.
    * Therefore, this debuggingError property is used to retain
    * the source of the test callback.
    */
