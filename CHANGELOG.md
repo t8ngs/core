@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/t8ngs/core/compare/v1.1.0...v1.1.1) (2025-09-26)
+
+
+### Bug Fixes
+
+* **ci:** error ci and deploy ([898dd58](https://github.com/t8ngs/core/commit/898dd5868f41d92e30fd346a079dafaaadf39f12))
+
 ## [1.1.0](https://github.com/t8ngs/core/compare/v1.0.0...v1.1.0) (2025-09-26)
 
 
