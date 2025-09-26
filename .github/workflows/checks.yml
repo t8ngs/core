@@ -1,0 +1,23 @@
+name: checks
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+permissions:
+  contents: read
+jobs:
+  typecheck:
+    uses: arapucajs/.github/.github/workflows/typecheck.yml@main
+
+  lint:
+    needs: typecheck
+    uses: arapucajs/.github/.github/workflows/lint.yml@main
+
+  test:
+    needs: lint
+    uses: arapucajs/.github/.github/workflows/test.yml@main
+
+
