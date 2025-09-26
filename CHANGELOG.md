@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/t8ngs/core/compare/v1.0.0...v1.1.0) (2025-09-26)
+
+
+### Features
+
+* **package:** add npm package and github package ([fc4d3d4](https://github.com/t8ngs/core/commit/fc4d3d47f2405fe498a983ef317bfc5686096a34))
+
 ## 1.0.0 (2025-09-26)
 
 
