@@ -5,7 +5,7 @@
 
 ### Bug Fixes
 
-* **types:** add corret file types ([9329044](https://github.com/t8ngs/core/commit/9329044190ee51d5ee75533af0761eda213f98f7))
+* **types:** add correct file types ([9329044](https://github.com/t8ngs/core/commit/9329044190ee51d5ee75533af0761eda213f98f7))
 
 ## [1.1.1](https://github.com/t8ngs/core/compare/v1.1.0...v1.1.1) (2025-09-26)
 
