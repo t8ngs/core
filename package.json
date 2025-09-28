@@ -29,7 +29,7 @@
   ],
   "exports": {
     ".": "./dist/index.js",
-    "./types": "./dist/src/types.js"
+    "./types": "./dist/src/types.d.ts"
   },
   "scripts": {
     "pretest": "npm run lint",
